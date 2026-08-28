@@ -1,2 +1,0 @@
-import Link from 'next/link';
-export default function Header({name}:{name:string}){return <header className="nav"><div className="container" style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}><Link className="brand" href="/">{name || 'Your Estate'}<span>.</span></Link><nav className="navlinks"><Link href="/properties">Properties</Link><Link href="/#about">About</Link><Link href="/contact">Contact</Link><Link className="btn" href="/contact">Book a viewing</Link></nav></div></header>}
