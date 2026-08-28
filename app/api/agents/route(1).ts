@@ -1,0 +1,2 @@
+import {NextResponse} from 'next/server'; import {db} from '@/lib/prisma'; import {getSession} from '@/lib/auth';
+export async function POST(req:Request){if(!(await getSession()))return NextResponse.json({error:'Unauthorized'},{status:401});const b=await req.json();const a=await db.agent.create({data:{name:b.name,role:b.role,bio:b.bio||'',photoUrl:b.photoUrl||'',phone:b.phone||'',email:b.email||'',whatsapp:b.whatsapp||''}});return NextResponse.json(a,{status:201})}

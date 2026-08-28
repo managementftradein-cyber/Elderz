@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function PropertyCard({p}:{p:any}){return <article className="card"><img src={p.imageUrl} alt={p.title}/><div className="cardbody"><div className="muted">{p.type} · {p.location}</div><h3>{p.title}</h3><div className="price">{p.currency} {p.price.toLocaleString()}</div><div className="chips"><span className="chip">{p.bedrooms} beds</span><span className="chip">{p.bathrooms} baths</span><span className="chip">{p.area} sqm</span></div><Link className="btn secondary" href={`/properties/${p.slug}`}>View property</Link></div></article>}
