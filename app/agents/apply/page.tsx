@@ -1,0 +1,2 @@
+import AgentApplicationForm from '@/components/AgentApplicationForm';
+export default function Apply(){return <main><section className="section cream"><div className="container narrow"><div className="eyebrow">Agent onboarding</div><h1>Apply to become an Elderz agent.</h1><p className="lead">Every applicant is reviewed before appearing publicly. We verify identity, contact details, professional licensing and supporting documents.</p></div></section><section className="section"><div className="container narrow"><AgentApplicationForm/></div></section></main>}

@@ -1,0 +1,1 @@
+import {getSession} from "@/lib/auth";import {redirect} from "next/navigation";import ContentManager from "./content-manager";export default async function Content(){if(!(await getSession()))redirect("/admin/login");return <><h1>Content manager</h1><p>Control services, testimonials, FAQs and blog posts from one place.</p><ContentManager/></>;}
