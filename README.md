@@ -55,6 +55,16 @@ This version adds:
 - Global Elderz AI chat assistant. Set `OPENAI_API_KEY` and optionally `OPENAI_MODEL` (defaults to `gpt-5.6-luna`) in Vercel/server environment variables. Never expose the API key in client code.
 - Elderz logo is included at `public/elderz-logo.png` and used as the default site header logo.
 
+
+### Existing Supabase database / P3005 baseline
+If your Supabase database already contains the Elderz tables, do **not** run `prisma migrate reset`. Baseline the existing schema once by running this command from the project root against the same `DIRECT_URL` used by Vercel:
+
+```bash
+npm run db:baseline
+```
+
+After that, `npm run build` can safely run `prisma migrate deploy`. The second agent-verification migration is intentionally a no-op because the agent verification fields are already part of the initial schema in this project.
+
 ### Deployment
 1. Set the required Vercel environment variables, then deploy. The build automatically runs `prisma migrate deploy` against `DIRECT_URL`.
 2. Make sure `DATABASE_URL`, `DIRECT_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_STORAGE_BUCKET`, and `JWT_SECRET` are configured in Vercel.
