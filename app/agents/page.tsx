@@ -1,9 +1,0 @@
-import Link from 'next/link';
-import {db} from '@/lib/prisma';
-export const dynamic='force-dynamic';
-export default async function Agents(){
- const agents=await db.agent.findMany({where:{status:'VERIFIED'},orderBy:{createdAt:'desc'}});
- return <main><section className="section cream"><div className="container agenthero"><div><div className="eyebrow">Elderz network</div><h1>Meet our verified agents.</h1><p className="lead">Connect with professionals who have completed Elderz verification and are approved to represent clients and listings.</p><Link className="btn gold" href="/agents/apply">Become an agent</Link></div><div className="agenttrust"><strong>Verified by Elderz</strong><span>Identity • License • Contact • Compliance</span></div></div></section>
- <section className="section"><div className="container"><div className="sectionhead"><div><div className="eyebrow">Our professionals</div><h2>Trusted people. Better property decisions.</h2></div><Link className="btn secondary" href="/agents/apply">Apply to join</Link></div>
- {agents.length===0 ? <div className="empty panel">No verified agents have been published yet.</div> : <div className="agentgrid">{agents.map(a=><article className="agentcard" key={a.id}><div className="agentphoto">{a.photoUrl?<img src={a.photoUrl} alt={a.name}/>:<span>{a.name.slice(0,1)}</span>}</div><div className="agentbody"><div className="verified">✓ Verified agent</div><h3>{a.name}</h3><p className="muted">{a.role}</p><p>{a.bio}</p><div className="chips"><span className="chip">Identity verified</span><span className="chip">License verified</span></div><div className="agentcontact"><a href={`tel:${a.phone}`}>Call</a>{a.whatsapp&&<a href={`https://wa.me/${a.whatsapp.replace(/\D/g,'')}`}>WhatsApp</a>}<a href={`mailto:${a.email}`}>Email</a></div></div></article>)}</div>}</div></section></main>
-}
