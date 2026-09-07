@@ -39,7 +39,7 @@ git push -u origin main
 ## Vercel
 Import the GitHub repository into Vercel. Add the same environment variables in Vercel Project Settings → Environment Variables for Production/Preview as needed. The app is configured for a Next.js deployment.
 
-The Vercel build runs `prisma migrate deploy` automatically before `next build`. Set both `DATABASE_URL` and `DIRECT_URL`; `DIRECT_URL` is used for migrations. For Supabase pooler connections in environments that reject the pooler certificate chain, append `sslmode=no-verify` to `DIRECT_URL` (TLS remains enabled, but certificate verification is disabled for the migration connection). Prefer Supabase's current CA certificate/verify-full setup if your environment supports it. Do not run `prisma migrate dev` in production.
+The Vercel build runs `prisma migrate deploy` automatically before `next build`. Set both `DATABASE_URL` and `DIRECT_URL`; `DIRECT_URL` is used for migrations. Do not run `prisma migrate dev` in production.
 
 ## Security
 Keep `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET` and `SUPABASE_SERVICE_ROLE_KEY` server-only. Do not commit `.env`. Vercel environment variables are not automatically exposed to browser code unless deliberately prefixed with `NEXT_PUBLIC_`.
@@ -74,3 +74,6 @@ After that, `npm run build` can safely run `prisma migrate deploy`. The second a
 
 ## UI merge note
 The public-facing UI follows the Elderz live-site visual direction: light neutral surfaces, blue actions, rounded property cards, hero search, recent/featured rails, map CTA, customer navigation, and compact footer. Agent verification, applications, chatbot, CMS and the existing admin routes remain available.
+
+### Vercel/Supabase TLS note
+For Supabase pooler connections that report `SELF_SIGNED_CERT_IN_CHAIN`, keep `DATABASE_URL` on the transaction pooler (6543) and use `sslmode=no-verify` for `DIRECT_URL` on the session pooler (5432). The Prisma runtime adapter also explicitly enables TLS while allowing the pooler's certificate chain in Node's pg driver.
