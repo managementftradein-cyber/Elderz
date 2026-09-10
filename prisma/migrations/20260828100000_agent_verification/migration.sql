@@ -1,0 +1,3 @@
+-- Agent verification is already included in the initial schema migration.
+-- This migration is intentionally a no-op so existing databases can baseline
+-- the initial schema without attempting to recreate AgentStatus or columns.
