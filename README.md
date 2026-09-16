@@ -8,10 +8,7 @@ Properties, featured properties, agents, services, testimonials, FAQs, blog post
 
 ## Supabase setup
 1. Create a Supabase project.
-2. In **Supabase → Connect**, use the **Transaction Pooler** connection for `DATABASE_URL` (normally port `6543`). This is the runtime connection used by Vercel.
-3. Use the **Direct** connection, or the **Session Pooler** connection when a direct connection is not available, for `DIRECT_URL` (normally port `5432`). This is used by Prisma migrations.
-4. Replace the password placeholder with your current **database password**. Do not use your Supabase account password unless it is also the database password.
-5. If the database password contains URL-reserved characters such as `@`, `:`, `/`, `?`, `#`, `%` or `&`, use the connection string copied directly from Supabase or URL-encode those characters.
+2. In Connect, copy the Transaction Pooler URL for `DATABASE_URL` and the Direct URL for `DIRECT_URL`. Supabase recommends transaction pooling for serverless application traffic and direct/session connections for migration workflows.
 3. In Project Settings → API, copy the service-role key into `SUPABASE_SERVICE_ROLE_KEY`. NEVER expose this as `NEXT_PUBLIC_*`.
 4. The app creates a public `site-media` Storage bucket on first authenticated upload.
 
@@ -42,7 +39,7 @@ git push -u origin main
 ## Vercel
 Import the GitHub repository into Vercel. Add the same environment variables in Vercel Project Settings → Environment Variables for Production/Preview as needed. The app is configured for a Next.js deployment.
 
-The Vercel build runs `prisma migrate deploy` automatically before `next build`. Set both `DATABASE_URL` and `DIRECT_URL`; `DATABASE_URL` is the runtime pooler connection and `DIRECT_URL` is used for migrations. Do not run `prisma migrate dev` in production.
+The Vercel build runs `prisma migrate deploy` automatically before `next build`. Set both `DATABASE_URL` and `DIRECT_URL`; `DIRECT_URL` is used for migrations. Do not run `prisma migrate dev` in production.
 
 ## Security
 Keep `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET` and `SUPABASE_SERVICE_ROLE_KEY` server-only. Do not commit `.env`. Vercel environment variables are not automatically exposed to browser code unless deliberately prefixed with `NEXT_PUBLIC_`.
@@ -75,13 +72,19 @@ After that, `npm run build` can safely run `prisma migrate deploy`. The second a
 4. Ensure the Supabase service role can create/use the `agent-documents` private bucket.
 5. Do not commit or deploy the repository `.env` file; use Vercel Environment Variables instead.
 
-## Database authentication troubleshooting
-If Vercel reports Prisma `P1000` / `Authentication failed against the database server`, the application code has reached PostgreSQL but the username/password in the Vercel connection string is not accepted. Re-copy the connection string from Supabase Connect, verify the current database password, and update **DATABASE_URL** in Vercel. Do not paste database passwords into source code or chat. Redeploy after changing the variable.
-
-For this project, the runtime connection should resemble:
-`postgresql://postgres.PROJECT_REF:PASSWORD@aws-0-REGION.pooler.supabase.com:6543/postgres`
-
-Do not replace `DATABASE_URL` with `NEXT_PUBLIC_SUPABASE_URL`; they serve different purposes.
-
 ## UI merge note
 The public-facing UI follows the Elderz live-site visual direction: light neutral surfaces, blue actions, rounded property cards, hero search, recent/featured rails, map CTA, customer navigation, and compact footer. Agent verification, applications, chatbot, CMS and the existing admin routes remain available.
+
+## 2026 standard-site enhancements
+- Expanded verified agent directory with search, role filtering, verification badges, direct contact actions, and individual agent profiles.
+- Added privacy and cookie-policy pages.
+- Added a cookie consent banner with Accept All, Reject Optional, and Customize controls. Optional categories are not enabled unless selected.
+- Added agent-focused service sections inspired by common Nigerian real-estate marketplace patterns without copying third-party branding or content.
+
+## Luxury frontend refresh (September 2026)
+- Replaced the placeholder `E` header mark with the supplied Elderz EZ logo asset.
+- Added a subtle EZ logo watermark across public pages.
+- Rebuilt the homepage hero/search/category area in the new black, gold and metallic visual direction.
+- Added admin-controlled hero background mode: image, video, or logo-watermark-only.
+- Added `heroVideoUrl` and `heroBackgroundMode` as additive `SiteSettings` fields with a safe migration.
+- Video heroes use muted autoplay, looping and the hero image as a poster/fallback.
