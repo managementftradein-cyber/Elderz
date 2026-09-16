@@ -1,0 +1,3 @@
+"use client";
+import {useEffect} from "react";
+export default function AdminError({error,reset}:{error:Error&{digest?:string};reset:()=>void}){useEffect(()=>{console.error(error)},[error]);return <main className="adminmain"><div className="panel"><div className="eyebrow blue">Admin control center</div><h1>Admin page could not load.</h1><p className="muted">Please try again. If the problem continues, check the database connection and Vercel environment variables.</p><button className="btn gold" onClick={()=>reset()}>Try again</button></div></main>}
